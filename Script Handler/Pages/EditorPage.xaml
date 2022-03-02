@@ -1,0 +1,61 @@
+﻿<Page x:Name="page" x:Class="Script_Handler.Pages.EditorPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Script_Handler.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="1000" d:DesignWidth="1500"
+      Title="EditorPage">
+
+    <StackPanel Orientation="Horizontal">
+        <StackPanel x:Name="stackPanel" Width="1000">
+            <ListView x:Name="script_view"  Height="900" Padding="30" Width="{Binding ActualWidth, ElementName=stackPanel, Mode=OneWay}">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <EventSetter Event="MouseDoubleClick" Handler="script_view_SelectionChanged" />
+                    </Style>
+                </ListView.ItemContainerStyle>
+            </ListView>
+            <TextBox x:Name="input_box" Height="100" KeyDown="input_box_KeyDown">
+
+            </TextBox>
+        </StackPanel>
+        <StackPanel Width="200">
+            <TextBlock>Script body</TextBlock>
+            <TextBlock x:Name="script_data"></TextBlock>
+        </StackPanel>
+        <StackPanel x:Name="controls_panel" Width="300">
+            <TextBlock>Characters</TextBlock>
+            <TextBox x:Name="char_box" Height="400" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible">
+
+            </TextBox>
+            <TextBlock>Fonts</TextBlock>
+            <ListBox>
+                <ListBoxItem>
+                    <StackPanel Orientation="Horizontal">
+                        <RadioButton></RadioButton>
+                        <TextBlock>Normal</TextBlock>
+                    </StackPanel>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <StackPanel Orientation="Horizontal">
+                        <RadioButton></RadioButton>
+                        <TextBlock>Cursive</TextBlock>
+                    </StackPanel>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <StackPanel Orientation="Horizontal">
+                        <RadioButton></RadioButton>
+                        <TextBlock>Bold</TextBlock>
+                    </StackPanel>
+                </ListBoxItem>
+            </ListBox>
+            <StackPanel>
+                <TextBlock x:Name="help" TextWrapping="Wrap">
+                    
+                </TextBlock>
+            </StackPanel>
+        </StackPanel>
+    </StackPanel>
+</Page>
