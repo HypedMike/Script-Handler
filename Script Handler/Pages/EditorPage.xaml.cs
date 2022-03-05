@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Script_Handler.Objs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,9 +24,8 @@ namespace Script_Handler.Pages
         string file;
         MainWindow mainWindow;
         Objs.IO io;
-        string[] script;
-        string[] script_index;
-        int pointer_to_script = -1;
+
+        Script script;
 
 
         public EditorPage(string f, MainWindow m)
@@ -36,13 +36,16 @@ namespace Script_Handler.Pages
             m.Title = file.Split("\\")[file.Split("\\").Length - 1];
             mainWindow.Height = 1000;
             mainWindow.Width = 1500;
+
+
             io = new Objs.IO(f);
+            script = new Script(f);
             Update();
         }
 
-        private async void ScriptBodyUpdate()
+        private void ScriptBodyUpdate()
         {
-            int chars = 0;
+            /*int chars = 0;
             double approx_len;
             for(int i = 0; i < script.Length; i++)
             {
@@ -50,102 +53,146 @@ namespace Script_Handler.Pages
             }
             script_data.Text = "lines: " + script.Length + "\nChars: " + chars.ToString();
             help.Text = "\\{ name} --> name of person talking \n \\del {index} --> delete row index \n {index} - {text} --> substitute line index with text";
+            */
         }
 
-        private async void Update()
+        private void Update()
         {
-            (script_index, script) = await io.ReadAllFileAsync();
             ScriptBodyUpdate();
-            script_view.ItemsSource = script_index;
+            scriptviewupdater();
+        }
+
+        private void scriptviewupdater()
+        {
+            /* List<TextBlock> list = new List<TextBlock>();
+            int char_len = 0;
+            if (script.Length > 0)
+            {
+                char_len = int.Parse(script[0]);
+            }
+            script_index = Tools.SubArray(script_index, char_len + 1, script.Length - (char_len + 1));
+            foreach (string si in script_index)
+            {
+                TextBlock temp = new TextBlock();
+                temp.Text = si;
+                string name = si.Split(" ")[2];
+                if (isAChar(name))
+                {
+                    var converter = new System.Windows.Media.BrushConverter();
+                    temp.Foreground = (Brush)converter.ConvertFromString("#00afec");
+                    temp.Background = (Brush)converter.ConvertFromString("#FFFFFF90");
+                }
+                list.Add(temp);
+            }*/
+
+            script_view.ItemsSource = script.getTextBlocks();
         }
 
         private void input_box_KeyDown(object sender, KeyEventArgs e)
         {
             if(e.Key == Key.Enter && input_box.Text.Length > 0)
             {
-                if (isNumber(input_box.Text.Split(" ")[0]))
+
+                // operations over the submitted input
+                //
+                // parser
+                //
+
+
+                // EDIT A ROW
+                if (input_box.Text.Split(" ").Length > 2 && input_box.Text.Split(" ")[1] == "-" && isNumber(input_box.Text.Split(" ")[0]))
                 {
-                    int index = int.Parse(input_box.Text.Split(" ")[0]) - 1;
-                    if (index > -1 && index < script.Length)
+
+                    // if 3 parts are detected
+                    // if the second part is a '-'
+                    // if the first part is a number
+
+                    bool res = script.EditARow(int.Parse(input_box.Text.Split(" ")[0]), input_box.Text.Substring(4));
+
+                    if (!res)
                     {
-                        script[index + 1] = input_box.Text.Split((index + 1).ToString() + " - ")[1];
+                        MessageBox.Show("Index is out of bounds");
                     }
-                    input_box.Text = "";
-                    io.writeToFile(script);
-                }else if(input_box.Text[0] == '\\')
+
+
+                    // parser 2° lvl
+                }else if(input_box.Text[0] == '\\' && input_box.Text.Length > 1)
                 {
-                    if(input_box.Text.Substring(1, 3) == "del" && isNumber(input_box.Text.Split(" ")[1]))
+
+                    // if the first char is '\\'
+                    // if the first char is not the only char
+
+
+                    // DELETE A ROW
+                    if(input_box.Text.Substring(1, 3).ToLower() == "del" && isNumber(input_box.Text.Split(" ")[1]))
                     {
-                        string[] script_temp = new string[script.Length - 1];
 
-                        int pos0 = 0;
-                        int pos1 = 0;
-                        int pos2 = int.Parse(input_box.Text.Split(" ")[1]);
+                        // if the first part is 'del'
+                        // if the second part is a number
+                        // if the selected row is present in the script
 
-                        while (pos1 < script.Length)
+                        bool res = script.DeleteARow(int.Parse(input_box.Text.Split(" ")[1]));
+                        if (!res)
                         {
-                            if(pos1 != pos2)
-                            {
-                                script_temp[pos0] = script[pos1];
-                                pos0++;
-                                pos1++;
-                            }
-                            else
-                            {
-                                pos1++;
-                            }
+                            MessageBox.Show("Index out of limits", "Not cool, didnt laugh");
                         }
-                        script = script_temp;
-                        input_box.Text = "";
-                        io.writeToFile(script);
-                    }else if (isAChar(input_box.Text.Split(" ")[0].Substring(1, input_box.Text.Split(" ")[0].Length - 1)))
-                    {
-                        string name = input_box.Text.Split(" ")[0].Substring(1, input_box.Text.Split(" ")[0].Length - 1);
-                        string res = name.ToUpper() + " >> " + input_box.Text.Substring(name.Length + 2, input_box.Text.Length - (name.Length + 2));
-                        Task temp = io.writeToFileAsync(res);
-                        input_box.Text = "";
+                        else
+                        {
+                            input_box.Text = "";
+                        }
+
                     }
                     else
                     {
-                        MessageBox.Show("Your command \"" + input_box.Text + "\" was not recognized");
+
+                        // it's a character
+
+                        string name = input_box.Text.Substring(1).Split(" ")[0];
+                        string[] output = {name, input_box.Text.Substring(name.Length + 1)};
+                        script.AddARow(output);
+                        input_box.Text = "";
                     }
                 }
                 else
                 {
-                    Task temp = io.writeToFileAsync(input_box.Text);
+
+                    // it's a normal row
+
+                    script.AddARow(input_box.Text);
                     input_box.Text = "";
                 }
                 Update();
-                pointer_to_script = -1;
             }
             else if(e.Key == Key.W && Keyboard.IsKeyDown(Key.LeftCtrl))
             {
-                if(pointer_to_script < 0 || pointer_to_script > script.Length)
-                {
-                    pointer_to_script = script.Length - 1;
-                }
-                input_box.Text = script[pointer_to_script--];
+                input_box.Text = script.PointerUp();
             }else if(e.Key == Key.S && Keyboard.IsKeyDown(Key.LeftCtrl))
             {
-                if (pointer_to_script < 0 || pointer_to_script > script.Length)
-                {
-                    pointer_to_script = script.Length - 1;
-                }
-                input_box.Text = script[pointer_to_script++];
+                input_box.Text = script.PointerDown();
             }
         }
 
         private bool isAChar(string value)
         {
+            /*
             string[] charachters = char_box.Text.Split("\r\n");
             foreach(var c in charachters)
             {
-                if(c == value)
+                if(c.ToLower() == value.ToLower())
                 {
                     return true;
                 }
             }
-            return false;
+            charachters = char_box.Text.Split("\n");
+            foreach (var c in charachters)
+            {
+                if (c.ToLower() == value.ToLower())
+                {
+                    return true;
+                }
+            }
+            */
+            return true;
         }
 
         private bool isNumber(string v)
@@ -170,5 +217,6 @@ namespace Script_Handler.Pages
             }
 
         }
+        
     }
 }

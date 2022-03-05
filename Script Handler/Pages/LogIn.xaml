@@ -23,5 +23,12 @@
                 <Button x:Name="new_button" Click="new_button_Click">New</Button>
             </StackPanel>
         </StackPanel>
+        <StackPanel x:Name="input_name_box" Orientation="Horizontal" Visibility="Collapsed">
+            <TextBlock>
+                Name: 
+            </TextBlock>
+            <TextBox x:Name="name_box" Width="100" TextChanged="name_box_TextChanged"></TextBox>
+            <Button Click="Button_Click">Start</Button>
+        </StackPanel>
     </StackPanel>
 </Page>

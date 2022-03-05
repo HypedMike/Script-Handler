@@ -27,9 +27,10 @@
         </StackPanel>
         <StackPanel x:Name="controls_panel" Width="300">
             <TextBlock>Characters</TextBlock>
-            <TextBox x:Name="char_box" Height="400" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible">
-
-            </TextBox>
+            <ListView x:Name="char_box" Height="500">
+                
+            </ListView>
+            <Button Content="Update characters"/>
             <TextBlock>Fonts</TextBlock>
             <ListBox>
                 <ListBoxItem>

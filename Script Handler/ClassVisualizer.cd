@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Script_Handler.Objs.Script">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEgAAABQAAAAIAAEAARAACAYIBAASAAAAQAAQgAAA=</HashCode>
+      <FileName>Objs\Script.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Script_Handler.Objs.IO">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAACAAAAAAAAAAIAAAAABAgAAAA=</HashCode>
+      <FileName>Objs\IO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Script_Handler.Objs.Tools">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objs\Tools.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Script_Handler.Pages.EditorPage">
+    <Position X="0.75" Y="0.5" Width="1.5" />
+    <AssociationLine Name="mainWindow" Type="Script_Handler.MainWindow" FixedToPoint="true">
+      <Path>
+        <Point X="1.438" Y="3.531" />
+        <Point X="1.438" Y="5.5" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>ACQAAAAgAIQAAAAAAAAAQAAAhAAAAAAAFAAAAQAAAAA=</HashCode>
+      <FileName>Pages\EditorPage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="script" />
+      <Field Name="io" />
+      <Field Name="mainWindow" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Script_Handler.MainWindow" Collapsed="true">
+    <Position X="0.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MainWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Struct Name="Script_Handler.Objs.Line">
+    <Position X="5.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAAAAACIAAAAAAABAAA=</HashCode>
+      <FileName>Objs\Script.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Script_Handler.Objs.ActorBlock">
+    <Position X="3.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAQAAAAAAAAEAACAAAAAAAAAAAA=</HashCode>
+      <FileName>Objs\Script.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

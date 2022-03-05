@@ -15,27 +15,19 @@ namespace Script_Handler.Objs
         {
             path = f;
         }
-
-        public async Task writeToFileAsync(string row)
+        
+        public void writeToFile(string row)
         {
-            if (!File.Exists(path))
-            {
-                // Create a file to write to.
-                using (StreamWriter sw = File.CreateText(path))
-                {
-                    await sw.WriteAsync(row);
-                }
-            }
             using (StreamWriter sw = File.AppendText(path))
             {
                 if(init == 0)
                 {
-                    await sw.WriteAsync(row);
+                    sw.WriteLine(row);
                     init++;
                 }
                 else
                 {
-                    await sw.WriteAsync("\n" + row);
+                    sw.WriteLine(row + "\n");
                 }
             }
         }
@@ -49,6 +41,18 @@ namespace Script_Handler.Objs
                 }
             }
         }
+
+        public string[] ReadAllFile()
+        {
+            List<string> res_without_index = new List<string>();
+            string[] temp = File.ReadAllLines(path);
+            for (int i = 0; i < temp.Length; i++)
+            {
+                res_without_index.Add(temp[i]);
+            }
+            return res_without_index.ToArray();
+        }
+
         public async Task<(string[], string[])> ReadAllFileAsync()
         {
             List<string> res = new List<string>();
